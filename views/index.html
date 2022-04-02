@@ -3,14 +3,17 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Arcade</title>
+  <title>suchanekpetr.me</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Multiplayer space invaders" />
   <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anybody:wght@300;400;700;800&family=Roboto&family=VT323&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
   <link rel="stylesheet" href="/style.css" />
@@ -21,15 +24,53 @@
 <body>
   <section id="main" class="main">
     <div class="info p-2">
-      <span class="mr-1">Your Color:</span>
-      <input id="mycolor" class="color-input mr-1" type="color" />
-      <span class="mr-1">Your Room:</span>
+      <span class="mr-1 lang-en flag" style="display: none;" onmouseover="pointer()" onmouseout="base()"
+        onclick="setlang('cs')">
+        <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-cz" viewBox="0 0 640 480">
+          <path fill="#fff" d="M0 0h640v240H0z" />
+          <path fill="#d7141a" d="M0 240h640v240H0z" />
+          <path fill="#11457e" d="M360 240 0 0v480z" />
+        </svg>
+      </span>
+      <span class="mr-1 lang-cs flag" onmouseover="pointer()" onmouseout="base()" onclick="setlang('en')">
+        <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-gb" viewBox="0 0 640 480">
+          <path fill="#012169" d="M0 0h640v480H0z" />
+          <path fill="#FFF"
+            d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z" />
+          <path fill="#C8102E"
+            d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z" />
+          <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z" />
+          <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z" />
+        </svg>
+      </span>
+      <span class="mr-1 lang-en" style="display: none;">Your Color:</span>
+      <span class="mr-1 lang-cs">Tvoje barva:</span>
+      <input id="mycolor" onmouseover="pointer()" onmouseout="base()" class="color-input mr-1" type="color" />
+      <span class="mr-1 lang-en" style="display: none;">Your Room:</span>
+      <span class="mr-1 lang-cs">Tvoje místnost:</span>
       <span id="roomid" class="badge badge-info mr-1"></span>
-      <span class="mr-1">Rooms created:</span>
+      <span class="mr-1 lang-en" style="display: none;">Rooms created:</span>
+      <span class="mr-1 lang-cs">Počet místností:</span>
       <span id="totalrooms" class="mr-1 badge badge-info"></span>
-      <span class="mr-1">Visitors right now:</span>
-      <span id="totalvisitors" class="mr-1 badge badge-info"></span>
+      <span class="mr-1 lang-en" style="display: none;">Visitors right now:</span>
+      <span class="mr-1 lang-cs">Počet návštěvníků právě teď:</span>
+      <span id="totalvisitors" class="mr-2 badge badge-info"></span>
     </div>
+    <div class="introduction">
+      <h3>Petr Suchánek WEB DEVELOPER</h3>
+      <p class="lang-en" style="display: none;">Hi there! My name is Petr and i would like to take you on an adventure
+        through my 10+ years of experience with
+        web development. I started playing with code and web development when i was 13 and love it ever since.</p>
+      <p class="lang-cs">Zdravím! Jmenuji se Petr a rád bych tě vzal na cestu skrz mých 10+ let zkušeností s
+        web developmentem. S kódem jsem si začal hrát už když mi bylo 13 a i po tolika letech, kdy se to stalo mým
+        zaměstnáním, mě to pořád baví.</p>
+      <div class="hub-link"><a onmouseover="pointer()" onmouseout="base()" target="_blank"
+          class="d-flex align-items-center" href="https://github.com/Trilmatic"><img class="mr-1 d-inline-block"
+            width="25" height="25" src="/GitHub-Mark-Light-32px.png" alt="github" /><span class="lang-cs">Můj
+            GitHub</span><span class="lang-en" style="display: none;">My
+            GitHub</span></a></div>
+    </div>
+
   </section>
 </body>
 

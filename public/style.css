@@ -3,61 +3,140 @@
 }
 
 * {
-  scrollbar-width: thin;
-  scrollbar-color: blue orange;
+  scrollbar-width: 5px;
+  scrollbar-color: rgba(255,255,255,.4) rgba(0,0,0,.5);
 }
 
 *::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
+  height: 5px;
 }
 
 *::-webkit-scrollbar-track {
-  background: orange;
+  background: rgba(0,0,0,.5);
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: blue;
+  background-color: rgba(255,255,255,.4);
   border-radius: 20px;
-  border: 3px solid orange;
 }
 
 body {
   padding: 0;
   margin: 0;
+  overflow-y: hidden;
+  width: 7000px;
+  font-family: 'Anybody', cursive;
+}
+
+a, a:visited{
+  color: lightgreen;
+}
+
+a:hover{
+  cursor: none;
 }
 
 .main{
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh);
   background-color: #333;
   color: #fff;
   overflow-y: hidden;
   cursor: none;
 }
 
-.info{
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.visitor-cursor{
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  pointer-events: none;
-}
 
 input[type="color"] {
 	-webkit-appearance: none;
 	border: none;
 	width: 24px;
 	height: 24px;
+  cursor: pointer;
 }
 input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 0;
 }
 input[type="color"]::-webkit-color-swatch {
 	border: none;
+}
+
+.info{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  font-family: 'VT323', monospace;
+}
+
+.info .badge{
+  font-family: 'Anybody', cursive;
+}
+
+.flag{
+  width: 1.5rem;
+  height: 100%;
+}
+
+.visitor-cursor{
+  position: absolute;
+  width: 18px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 99;
+  -webkit-mask-image: url(cursor-base.png);
+  mask-image: url(cursor-base.png);
+  -webkit-mask-size: 100%;
+  mask-size: 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
+}
+
+.visitor-cursor.pointer{
+  -webkit-mask-image: url(pointer-mask.png);
+  mask-image: url(pointer-mask.png);
+  -webkit-mask-size: 100%;
+  mask-size: 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
+}
+
+
+
+.introduction{
+  position: absolute;
+  top: 50%;
+  left: 2rem;
+
+  transform: translateY(-50%);
+  max-width: 80vw;
+  width: 600px;
+}
+
+.introduction h3{
+  font-family: 'VT323', monospace;
+}
+
+.hub-link{
+  font-family: 'VT323', monospace;
+  font-size: 1.5rem;
+}
+
+.hub-link a{
+  max-width: 200px;
+}
+
+.img-socket{
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 60%;
+  left: 450px;
 }

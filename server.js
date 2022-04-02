@@ -9,14 +9,13 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-
-const MAX_VISITORS = 2;
+const MAX_VISITORS = 20;
 
 let rooms = [];
 let intervals = [];
 let totals = {
   totalRooms: 0,
-  totalVisitors: 0
+  totalVisitors: 0,
 };
 
 app.use(express.static("public"));
@@ -30,8 +29,7 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-const listener = app.listen(process.env.PORT, () => {
-});
+const listener = app.listen(process.env.PORT, () => {});
 
 io.listen(listener);
 
@@ -45,7 +43,7 @@ io.on("connection", (socket) => {
     x: 0,
     y: 100,
     color: randColor(),
-  })
+  });
 
   totals.totalVisitors++;
 
@@ -104,76 +102,20 @@ io.on("connection", (socket) => {
 }*/
 
   socket.on("change-user-color", function (color) {
-    let v = findVisitorInRoom(playerRoom,socket.id);
+    let v = findVisitorInRoom(playerRoom, socket.id);
     v.color = color;
-    io.in(playerRoom).emit("update-room", rooms[playerRoom]);
+    //io.in(playerRoom).emit("update-room", rooms[playerRoom]);
   });
 
   socket.on("change-user-position", function (position) {
-    let v = findVisitorInRoom(playerRoom,socket.id);
+    let v = findVisitorInRoom(playerRoom, socket.id);
     v.x = position.x;
     v.y = position.y;
-    io.in(playerRoom).emit("update-room", rooms[playerRoom]);
+    //io.in(playerRoom).emit("update-room", rooms[playerRoom]);
   });
 
-  socket.on("player-set-up", function (data) {
-    if (!rooms[playerRoom]) return;
-
-    //random start position
-    /*let x = Math.random() * (1900 - 20) + 20;
-    let y = Math.random() * (1900 - 20) + 20;*/
-    let x = 0;
-    let y = 0;
-
-    rooms[playerRoom].players.push({
-      id: socket.id,
-      nickname: data.nickname,
-      cords: { x: x, y: y, direction: "down" },
-      skin: data.skin,
-      ammo: 6,
-      score: 0,
-      dead: false,
-    });
-    io.in(playerRoom).emit(
-      "player-set-up",
-      rooms[playerRoom].players,
-      socket.id
-    );
-  });
-
-  socket.on("player-move", function (direction) {
-    let speed = 3;
-    if (!rooms[playerRoom]) return;
-    let me = getPlayerInRoomById(playerRoom, socket.id);
-    if (!me) return;
-    switch (direction) {
-      case "left":
-        let TileX = parseInt((me.cords.x + 2) / 30);
-        let TileYTop = parseInt((me.cords.y) / 30);
-        let TileYBotoom = parseInt((me.cords.y - 10) / 30);
-        if (!rooms[playerRoom].maze.maze[TileX][TileYTop].includes("wall") && !rooms[playerRoom].maze.maze[TileX][TileYBotoom].includes("wall"))
-          me.cords.x -= speed;
-        break;
-      case "right":
-        me.cords.x += speed;
-        break;
-      case "up":
-        me.cords.y -= speed;
-        break;
-      case "down":
-        me.cords.y += speed;
-        break;
-    }
-
-    me.cords.direction = direction;
-
-    /*if (me.cords.x < 20) me.cords.x = 20;
-    if (me.cords.x > 1900) me.cords.x = 1900;
-    if (me.cords.y < 20) me.cords.y = 20;
-    if (me.cords.y > 1900) me.cords.y = 1900;*/
-
-    io.in(playerRoom).emit("update-room-players", rooms[playerRoom].players);
-  });
+  //io.in(playerRoom).emit("update-room-players", rooms[playerRoom].players);
+  /*});*/
 
   socket.on("disconnect", () => {
     if (playerRoom) {
@@ -192,12 +134,7 @@ io.on("connection", (socket) => {
           delete rooms[playerRoom];
           totals.totalRooms--;
         } else {
-          /*io.in(playerRoom).emit(
-            "player-leave",
-            rooms[playerRoom].players,
-            msg,
-            socket.id
-          );*/
+          io.in(playerRoom).emit("player-leave", socket.id);
           socket.leave(playerRoom);
           socket.leave(socket.id);
         }
@@ -211,32 +148,43 @@ io.on("connection", (socket) => {
 
 const createRoom = function () {
   let roomId = uniqueId();
-  if(rooms[roomId]) roomId = createRoom();
+  if (rooms[roomId]) roomId = createRoom();
 
   let room = {
     visitors: [],
-    roomId: roomId
+    roomId: roomId,
   };
   rooms[roomId] = room;
   totals.totalRooms++;
+  createRoomInterval(roomId);
   return roomId;
-}
+};
+
+const createRoomInterval = function (roomId) {
+  let interval = setInterval(function () {
+    io.in(roomId).emit("update-room", rooms[roomId]);
+  }, 15);
+
+  intervals[roomId] = interval;
+};
 
 const randColor = function () {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
-}
+};
 
 const findRoomForPlayer = function () {
   for (const property in rooms) {
     if (Object.keys(rooms[property].visitors).length < MAX_VISITORS) {
       return property;
     }
-  };
+  }
   return createRoom();
 };
 
-const findVisitorInRoom = function (playerRoom,id) {
-  return rooms[playerRoom].visitors.find(function (x) { return x.id === id });
+const findVisitorInRoom = function (playerRoom, id) {
+  return rooms[playerRoom].visitors.find(function (x) {
+    return x.id === id;
+  });
 };
 
 const uniqueId = function () {
